@@ -1,0 +1,23 @@
+<script src="https://unpkg.com/htmx.org@2.0.2"></script>
+
+<div id="buttons">
+  <button hx-get="/test-methods" hx-target="#status">Send GET</button>
+  <button hx-post="/test-methods" hx-target="#status">Send POST</button>
+  <button hx-put="/test-methods" hx-target="#status">Send PUT</button>
+  <button hx-delete="/test-methods" hx-target="#status">Send DELETE</button>
+</div>
+
+<div id="status">No request sent</div>
+
+<style>
+  #buttons {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem; 
+  }
+  #buttons button {
+    width: 7rem;
+  }
+</style>

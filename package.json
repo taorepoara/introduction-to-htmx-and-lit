@@ -1,0 +1,27 @@
+{
+  "name": "introduction-to-htmx",
+  "version": "1.0.0",
+  "description": "A companion project to my 'Introduction to htmx' talk",
+  "main": "server/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server/index.js",
+    "start-todo": "node server/todo.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LostInBrittany/introduction-to-htmx.git"
+  },
+  "keywords": [
+    "htmx"
+  ],
+  "author": "Horacio Gonzalez <horacio.gonzalez@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LostInBrittany/introduction-to-htmx/issues"
+  },
+  "homepage": "https://github.com/LostInBrittany/introduction-to-htmx#readme",
+  "dependencies": {
+    "express": "^4.20.0"
+  }
+}

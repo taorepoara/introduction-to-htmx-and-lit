@@ -1,0 +1,33 @@
+<script src="https://unpkg.com/htmx.org@2.0.2"></script>
+
+<!-- By default, AJAX requests are triggered by the “natural” event of an element: -->
+
+
+<div id="test-replace">
+
+  <button hx-get="/test-replace/innerHTML">
+    If you click, this message will be replaced
+  </button>
+
+  <button hx-get="/test-replace/outerHTML" hx-swap="outerHTML">
+    If you click, this button will become a div
+  </button>
+
+  <button hx-get="/test-replace/delete" hx-swap="delete">
+    If you click, this button will dissapear when the response is received
+  </button>
+
+  <button hx-get="/test-replace/none" hx-swap="none">
+    If you click, nothing changes, the response is ignored
+  </button>
+  
+</div>
+
+
+<style>
+  #test-replace {
+    display: flex;
+    flex-flow: column;
+    gap: 1rem;
+  }
+</style>

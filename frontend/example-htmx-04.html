@@ -1,0 +1,33 @@
+<script src="https://unpkg.com/htmx.org@2.0.2"></script>
+
+<!-- By default, AJAX requests are triggered by the “natural” event of an element: -->
+
+
+<div id="test-triggers">
+  <button hx-get="/trigger/natural" hx-target="#status">
+    In a button the natural event is a click
+  </button>
+  <button hx-trigger="mouseover" hx-get="/trigger/mouseover" hx-target="#status">
+    This button triggers on mouseover
+  </button>
+  <button hx-trigger="mouseenter" hx-get="/trigger/mouseenter" hx-target="#status">
+    This button triggers on mouseenter
+  </button>
+  <button hx-trigger="mouseleave" hx-get="/trigger/mouseleave" hx-target="#status">
+    This button triggers on mouseleave
+  </button>
+</div>
+
+<div id="status">No AJAX request sent yet</div>
+
+
+<style>
+  #test-triggers {
+    display: flex;
+    flex-flow: column;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    margin-left: 2rem;
+    margin-right: 2rem;
+  }
+</style>

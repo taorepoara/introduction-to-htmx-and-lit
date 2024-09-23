@@ -1,0 +1,11 @@
+<script src="https://unpkg.com/htmx.org@2.0.2"></script>
+
+<!-- have a button that POST on a click via AJAX 
+     and replace the content of #status div 
+     with the response -->
+
+<button hx-delete="/clicked" hx-target="#status">
+    Click Me
+</button>
+
+<div id="status">Not yet clicked</div>

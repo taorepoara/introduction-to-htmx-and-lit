@@ -1,0 +1,27 @@
+<script src="https://unpkg.com/htmx.org@2.0.2"></script>
+
+<!-- By default, AJAX requests are triggered by the “natural” event of an element: -->
+<div id="test-triggers">
+  <button hx-trigger="every 5s" hx-get="/trigger/5seconds" hx-target="#status">
+    Sends request every 5 seconds, no event needed
+  </button>
+  <button hx-trigger="click[ctrlKey]" hx-get="/trigger/ctrlclick" hx-target="#status">
+    Sends request on click while pressing Ctrl
+  </button>
+  <button hx-trigger="click[ctrlKey] once" hx-get="/trigger/ctrlclickonce" hx-target="#status">
+    Sends request on the first click while pressing Ctrl
+  </button>
+</div>
+
+<div id="status">No AJAX request sent yet</div>
+
+<style>
+  #test-triggers {
+    display: flex;
+    flex-flow: column;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    margin-left: 2rem;
+    margin-right: 2rem;
+  }
+</style>
