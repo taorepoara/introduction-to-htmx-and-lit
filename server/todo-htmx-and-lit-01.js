@@ -21,6 +21,7 @@ function mainView() {
         <input type="text" name="task" required />
         <input type="submit" value="addTask" />
       </form>
+      <div id="counter"></div>
     </div>    
   `;
 }
@@ -42,6 +43,7 @@ function editView(task, index) {
 function headerFragment() {
   return /*html*/`
     <script type="module" src="https://unpkg.com/htmx.org@2.0.2"></script>
+    <script type="module" src="./my-lit-counter/my-lit-counter.js"></script>
     <style>
       #todo-list {
         margin-bottom: 1rem;
@@ -53,6 +55,10 @@ function headerFragment() {
         display: flex;
         flex-flow: row;
         gap: 1rem;
+        align-items: center;
+        justify-content: space-around;
+        border-bottom: solid 1px #444;
+        padding-bottom: 1rem;
       }
       .task-edit {
         cursor: pointer;
@@ -70,6 +76,11 @@ function taskFragment(task,index) {
         hx-get="/edit/${index}"
         hx-target="#app"
       >📝</span>
+      <my-lit-counter 
+        hx-post="/counter/increased" 
+        hx-trigger="increased"
+        hx-target="#counter"
+      ></my-lit-counter>
     </div> 
   `;
 }
@@ -108,9 +119,16 @@ app.put('/task', (req, resp) => {
 });
 
 
+let clicks=0;
+app.post('/counter/increased',(req, resp) => {
+  clicks++;
+  resp.send(/*html*/`
+    Total number of clicks = ${clicks}
+  `);
+});
+
 let staticRoot = path.join(__dirname, '../frontend');
 app.use('/', express.static(staticRoot))
-
 
 let server = app.listen(process.env.PORT || 8080, async function () {
   let addressInfo = server.address();
