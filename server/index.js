@@ -113,7 +113,16 @@ app.post('/add-task', (req, resp) => {
   resp.send(`<ul>${taskList.join('')}</ul>`);
 });
 
+app.get('/tasks', (req, resp) => { 
+  let task = req.body.task;
+  resp.send(`<ul>${taskList.join('')}</ul>`);
+});
 
+app.post('/task', (req, resp) => { 
+  let task = req.body.task;
+  taskList.push(`<li>${task}</li>`);  
+  resp.send(`<li>${task}</li>`);
+});
 /* ---------------------------------------------------------------------- */
 
 
