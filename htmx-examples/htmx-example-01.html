@@ -1,11 +1,26 @@
-<script src="https://unpkg.com/htmx.org@2.0.2"></script>
+<!DOCTYPE html>
+<html lang="en">
 
-<!-- have a button that POST on a click via AJAX 
-     and replace the content of #status div 
-     with the response -->
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../styles.css">
+  <title>&lt;/&gt; htmx examples: Sending requests other than `GET`</title>
+</head>
 
-<button hx-post="/clicked" hx-target="#status">
-    Click Me
-</button>
+<body>
+  <h1>&lt;/&gt; htmx examples</h1>
+  <h2>Sending requests other than `GET`</h2>
 
-<div id="status">Not yet clicked</div>
+  <script src="https://unpkg.com/htmx.org@2.0.2"></script>
+
+  <div id="buttons">    
+    <button hx-post="/clicked" hx-target="#status">
+      Click Me
+    </button>
+  </div>
+
+  <div id="status">Not yet clicked</div>
+</body>
+
+</html>

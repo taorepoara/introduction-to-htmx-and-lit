@@ -5,8 +5,7 @@
   "main": "server/index.js",
   "type": "module",
   "scripts": {
-    "start": "node server/index.js",
-    "start-todo": "node server/todo.js"
+    "start": "node server/index.js"
   },
   "repository": {
     "type": "git",

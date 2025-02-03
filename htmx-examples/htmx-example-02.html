@@ -1,23 +1,28 @@
-<script src="https://unpkg.com/htmx.org@2.0.2"></script>
+<!DOCTYPE html>
+<html lang="en">
 
-<div id="buttons">
-  <button hx-get="/clicked" hx-target="#status">Send GET</button>
-  <button hx-post="/clicked" hx-target="#status">Send POST</button>
-  <button hx-put="/clicked" hx-target="#status">Send PUT</button>
-  <button hx-delete="/clicked" hx-target="#status">Send DELETE</button>
-</div>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../styles.css">
+  <title>&lt;/&gt; htmx & Web Components: A Perfect Match for Frontend Development</title>
+</head>
 
-<div id="status">No request sent</div>
+<body>
 
-<style>
-  #buttons {
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: space-between;
-    gap: 1rem;
-    margin-bottom: 1rem; 
-  }
-  #buttons button {
-    width: 7rem;
-  }
-</style>
+  <h1>&lt;/&gt; htmx examples</h1>
+  <h2>Sending RESTful requests: <br> `GET`, `POST`, `PUT` and `DELETE`</h2>
+
+  <script src="https://unpkg.com/htmx.org@2.0.2"></script>
+
+  <div id="buttons">
+    <button hx-get="/clicked" hx-target="#status">Send GET</button>
+    <button hx-post="/clicked" hx-target="#status">Send POST</button>
+    <button hx-put="/clicked" hx-target="#status">Send PUT</button>
+    <button hx-delete="/clicked" hx-target="#status">Send DELETE</button>
+  </div>
+
+  <div id="status">No request sent</div>
+</body>
+
+</html>

@@ -1,0 +1,57 @@
+body {
+  font-size: 16pt;
+  font-family: OpenSans, Arial, sans-serif;
+  line-height: 1.5;
+  padding: 20px;
+}
+
+#buttons {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+#buttons button {
+  width: 7rem;
+}
+
+#buttons-column {
+  display: flex;
+  flex-flow: column;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+/* Button styling */
+button, input[type="submit"] {
+  font-size: 16pt; /* Same size as normal text */
+  font-family: inherit; /* Same font as the rest of the text */
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px; /* Rounded corners */
+  background-color: #007BFF; /* Primary blue */
+  color: white;
+  cursor: pointer;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); /* Subtle drop shadow */
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Hover effect */
+button:hover, input[type="submit"]:hover {
+  background-color: #0056b3; /* Darker blue */
+  box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.3); /* Slightly stronger shadow */
+}
+
+/* Focus effect for accessibility */
+button:focus, input[type="submit"]:focus {
+  outline: 3px solid #ffcc00; /* High contrast outline */
+  outline-offset: 2px;
+}
+
+/* Disabled button styling */
+button:disabled, input[type="submit"]:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  box-shadow: none;
+}

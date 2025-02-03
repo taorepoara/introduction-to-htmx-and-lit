@@ -1,38 +1,61 @@
-<script src="https://unpkg.com/htmx.org@2.0.2"></script>
+<!DOCTYPE html>
+<html lang="en">
 
-<div id="test-spinner">
-  <button hx-get="/slow-request" hx-indicator="#panel" hx-target="#status">
-    Send a slow request
-  </button>
-  <div id="panel">
-    <div id="status">No response received yet</div>
-    <img id="indicator"  src="./img/spinner.gif">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../styles.css">
+  <title>&lt;/&gt; htmx & Web Components: A Perfect Match for Frontend Development</title>
+</head>
+
+<body>
+  <h1>&lt;/&gt; htmx examples</h1>
+  <h2>A spinner to ease your wait</h2>
+
+  <script src="https://unpkg.com/htmx.org@2.0.2"></script>
+
+  <div id="buttons-column">
+    <button hx-get="/slow-request" hx-indicator="#panel" hx-target="#status">
+      Send a slow request
+    </button>
+    <div id="panel">
+      <div id="status">No response received yet</div>
+      <img id="indicator" src="/img/spinner.gif">
+    </div>
   </div>
-</div>
 
-<style>
-  #indicator {
-    display: none;
-  }
-  .htmx-request #indicator {
-    display:block;
-  }
-  #status {
-    display: block;
-  }
-  .htmx-request #status {
-    display: none;
-  }
-  #test-spinner {
-    display: flex;
-    flex-flow: column;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 1rem;
-    margin-left: 2rem;
-    margin-right: 2rem;
-  }
-  #indicator {
-    width: 10vw;
-  }
-</style>
+  <style>
+    #indicator {
+      display: none;
+    }
+
+    .htmx-request #indicator {
+      display: block;
+    }
+
+    #status {
+      display: block;
+    }
+
+    .htmx-request #status {
+      display: none;
+    }
+
+    #test-spinner {
+      display: flex;
+      flex-flow: column;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      margin-left: 2rem;
+      margin-right: 2rem;
+    }
+
+    #indicator {
+      width: 10vw;
+    }
+  </style>
+
+</body>
+
+</html>

@@ -14,12 +14,17 @@ Below is an example of a button that sends a `POST` request when clicked and rep
 ```html
 <script src="https://unpkg.com/htmx.org@2.0.2"></script>
 
-<button hx-post="/clicked" hx-target="#status">
-   Click Me
-</button>
+<div id="buttons">    
+  <button hx-post="/clicked" hx-target="#status">
+    Click Me
+  </button>
+</div>
 
 <div id="status">Not yet clicked</div>
 ```
+
+![Sending requests other than `GET`](../img/htmx-example-01.jpg)
+_Above: Sending requests other than `GET`._
 
 ### 🔹 How it works
 
@@ -45,20 +50,10 @@ This example demonstrates how to use htmx to send various HTTP methods (`GET`, `
 </div>
 
 <div id="status">No request sent</div>
-
-<style>
-  #buttons {
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: space-between;
-    gap: 1rem;
-    margin-bottom: 1rem; 
-  }
-  #buttons button {
-    width: 7rem;
-  }
-</style>
 ```
+
+![Sending RESTful requests: `GET`, `POST`, `PUT` and `DELETE`](../img/htmx-example-02.jpg)
+_Above: Sending RESTful requests: `GET`, `POST`, `PUT` and `DELETE`._
 
 ### 🔹 How it works
 
@@ -76,7 +71,7 @@ This example demonstrates how **htmx can modify the DOM dynamically** based on t
 ```html
 <script src="https://unpkg.com/htmx.org@2.0.2"></script>
 
-<div id="test-replace">
+<div id="buttons-column">
   <button hx-get="/test-replace/innerHTML">
     If you click, this message will be replaced
   </button>
@@ -93,15 +88,10 @@ This example demonstrates how **htmx can modify the DOM dynamically** based on t
     If you click, this button will disappear when the response is received
   </button>  
 </div>
-
-<style>
-  #test-replace {
-    display: flex;
-    flex-flow: column;
-    gap: 1rem;
-  }
-</style>
 ```
+
+![Using the response to replace elements](../img/htmx-example-03.jpg)
+_Above: Using the response to replace elements._
 
 ### 🔹 How it works
 
@@ -122,7 +112,7 @@ This example demonstrates how **htmx can trigger AJAX requests based on differen
 ```html
 <script src="https://unpkg.com/htmx.org@2.0.2"></script>
 
-<div id="test-triggers">
+<div id="button-column">
   <button hx-get="/trigger/natural" hx-target="#status">
     In a button the natural event is a click
   </button>
@@ -138,18 +128,10 @@ This example demonstrates how **htmx can trigger AJAX requests based on differen
 </div>
 
 <div id="status">No AJAX request sent yet</div>
-
-<style>
-  #test-triggers {
-    display: flex;
-    flex-flow: column;
-    gap: 1rem;
-    margin-bottom: 1rem;
-    margin-left: 2rem;
-    margin-right: 2rem;
-  }
-</style>
 ```
+
+![Choosing when to send requests](../img/htmx-example-04.jpg)
+_Above: Choosing when to send requests._
 
 ### 🔹 How it works
 
@@ -171,7 +153,7 @@ This example demonstrates how **htmx can trigger AJAX requests based on advanced
 ```html
 <script src="https://unpkg.com/htmx.org@2.0.2"></script>
 
-<div id="test-triggers">
+<div id="buttons-column">
   <button hx-trigger="every 5s" hx-get="/trigger/5seconds" hx-target="#status">
     Sends request every 5 seconds, no event needed
   </button>
@@ -184,18 +166,11 @@ This example demonstrates how **htmx can trigger AJAX requests based on advanced
 </div>
 
 <div id="status">No AJAX request sent yet</div>
-
-<style>
-  #test-triggers {
-    display: flex;
-    flex-flow: column;
-    gap: 1rem;
-    margin-bottom: 1rem;
-    margin-left: 2rem;
-    margin-right: 2rem;
-  }
-</style>
 ```
+
+![More triggering options](../img/htmx-example-05.jpg)
+_Above: More triggering options._
+
 
 ### 🔹 How it works
 
@@ -217,13 +192,13 @@ This example demonstrates how **htmx can show a loading indicator** while waitin
 ```html
 <script src="https://unpkg.com/htmx.org@2.0.2"></script>
 
-<div id="test-spinner">
+<div id="buttons-column">
   <button hx-get="/slow-request" hx-indicator="#panel" hx-target="#status">
     Send a slow request
   </button>
   <div id="panel">
     <div id="status">No response received yet</div>
-    <img id="indicator" src="./img/spinner.gif">
+    <img id="indicator" src="/img/spinner.gif">
   </div>
 </div>
 
@@ -240,20 +215,15 @@ This example demonstrates how **htmx can show a loading indicator** while waitin
   .htmx-request #status {
     display: none;
   }
-  #test-spinner {
-    display: flex;
-    flex-flow: column;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 1rem;
-    margin-left: 2rem;
-    margin-right: 2rem;
-  }
   #indicator {
     width: 10vw;
   }
 </style>
 ```
+
+![A spinner to ease your wait](../img/htmx-example-06.jpg)
+_Above: A spinner to ease your wait._
+
 
 ### 🔹 How it works
 
