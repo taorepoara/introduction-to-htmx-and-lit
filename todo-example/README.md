@@ -18,7 +18,7 @@ We start with a **basic static structure** for the to-do list. This step sets up
   <div id="todo-list"></div>
   <form id="addTask">
     <input type="text" name="task" required />
-    <input type="submit" value="addTask" />
+    <input type="submit" value="Add task" />
   </form>
 </div>
 ```
@@ -48,12 +48,12 @@ Now that we have a **static structure**, we integrate **htmx** to make the form 
   <div id="todo-list"></div>
   <form
     id="addTask"
-    hx-post="/add-task"
+    hx-post="/todo-list/step02/add"
     hx-trigger="submit"
     hx-target="#todo-list"
   >
     <input type="text" name="task" required />
-    <input type="submit" value="addTask" />
+    <input type="submit" value="Add task" />
   </form>
 </div>
 ```
@@ -69,7 +69,7 @@ _Above: Step 2: Adding the htmx library._
   <script src="https://unpkg.com/htmx.org@2.0.2"></script>
   ```
 - The form is now **enhanced with htmx attributes**:
-  - `hx-post="/task"`: **Sends a `POST` request** to `/add-task` when submitted.
+  - `hx-post="/task"`: **Sends a `POST` request** to `/todo-list/step02/add` when submitted.
   - `hx-trigger="submit"`: **Triggers the request when the form is submitted**.
   - `hx-target="#todo-list"`: **Replaces the content of `#todo-list`** with the server response.
 
@@ -81,14 +81,14 @@ With this setup, when a **user submits a new task**, the request will be sent vi
 ```js
 let taskList = [];
 
-app.post('/add-task-step-02', (req, resp) => { 
+app.post('/todo-list/step02/add', (req, resp) => { 
   let task = req.body.task;
   taskList.push(`<li>${task}</li>`);  
   resp.send(`<ul>${taskList.join('')}</ul>`);
 });
 ```
 
-The server maintains **a simple `taskList` array** to store tasks. When the form **sends a `POST` request** to `/add-task-step-02`, the server:
+The server maintains **a simple `taskList` array** to store tasks. When the form **sends a `POST` request** to `/todo-list/step02/add`, the server:
 
   1. Extracts the **task text** from `req.body.task`.
   2. Adds it to the `taskList` array, wrapping it in `<li>...</li>`.
@@ -112,13 +112,13 @@ In the previous step, submitting a task replaced the entire to-do list with the 
   <div id="todo-list"></div>
   <form
     id="addTask"
-    hx-post="/task"
+    hx-post="/todo-list/step03/task"
     hx-trigger="submit"
     hx-target="#todo-list"
     hx-swap="beforeend"
   >
     <input type="text" name="task" required />
-    <input type="submit" value="addTask" />
+    <input type="submit" value="Add task" />
   </form>
 </div>
 ```
@@ -132,14 +132,14 @@ We add `hx-swap="beforeend"`, which **appends** new tasks **to the existing `#to
 
 ### 🔧 A peek at the updated server-side
 
-To support this change, we slightly modify the server response to sent only the new element
+To support this change, we slightly modify the server response to send only the new element
 
 📁 **File:** `./server/index.js`
 ```js
-app.post('/task', (req, resp) => { 
+app.post('/todo-list/step03/task', (req, resp) => { 
   let task = req.body.task;
   taskList.push(`<li>${task}</li>`);  
-  resp.send(`<li>${task}</li>`);s
+  resp.send(`<li>${task}</li>`);
 });
 
 ```
@@ -156,14 +156,14 @@ So far, we’ve made it possible to add tasks dynamically, but what happens if t
 <script src="https://unpkg.com/htmx.org@2.0.2"></script>
 
 <div id="app" class="container">
-  <div 
+  <ul 
     id="todo-list"
-    hx-get="/tasks"
+    hx-get="/todo-list/step04/tasks"
     hx-trigger="load"
-  ></div>
+  ></ul>
   <form
     id="addTask"
-    hx-post="/task"
+    hx-post="/todo-list/step04/task"
     hx-trigger="submit"
     hx-target="#todo-list"
     hx-swap="beforeend"
@@ -179,7 +179,7 @@ _Above: Step 4: Preloading existing tasks._
 
 ### 🔹 How it works
 
-We **modify `#todo-list`** to **automatically load tasks** from the server. The `hx-trigger="load"` attribute **triggers a request when the page loads**, and `hx-get="/tasks"` sends it as a **`GET` request** to `/tasks` to retrieve the current task list. The server **returns the existing tasks**, which are **displayed inside `#todo-list`**.
+We **modify `#todo-list`** to **automatically load tasks** from the server. The `hx-trigger="load"` attribute **triggers a request when the page loads**, and `hx-get="/todo-list/step04/tasks"` sends it as a **`GET` request** to `/todo-list/step04/tasks` to retrieve the current task list. The server **returns the existing tasks**, which are **displayed inside `#todo-list`**.
 
 ### 🔧 A peek at the updated server-side
 
@@ -189,16 +189,119 @@ To support this change, we add a new route that **returns the existing tasks** w
 ```js
 let taskList = [];
 
-app.get('/tasks', (req, resp) => {
-  resp.send(`<ul>${taskList.join('')}</ul>`);
+app.get('/todo-list/step04/tasks', (req, resp) => {
+  resp.send(`${taskList.join('')}`);
 });
 
-app.post('/task', (req, resp) => { 
+app.post('/todo-list/step04/task', (req, resp) => { 
   let task = req.body.task;
   taskList.push(`<li>${task}</li>`);  
   resp.send(`<li>${task}</li>`);
 });
 ```
-The new `GET /tasks` route **sends the current list of tasks** as an `<ul>` element. This allows **existing tasks to be displayed** when the page loads. The `/task` route remains unchanged.
+The new `GET /todo-list/step04/tasks` route **sends the current list of tasks** as a set of `<li>` elements. This allows **existing tasks to be displayed** when the page loads. The `POST /todo-list/step04/task` route behaviour remains the same than in precedent step.
+
+---
+
+## 📌 Step 5: Editing tasks
+
+So far, we can add and display tasks, but users cannot edit existing tasks. In this step, we allow tasks to be **edited directly in place**.
+
+In this step frontend remains nearly unchanged, and we introduce dynamic HTML generation  in the backend.
+
+### 🖥️ Frontend: Minimal changes
+
+📁 **File:** `./todo-step-05.html`
+```html
+<script src="https://unpkg.com/htmx.org@2.0.2"></script>
+
+<div id="app" class="container">
+  <h1>To-Do List</h1>
+  <ul 
+      id="todo-list" 
+      hx-get="/todo-list/step05/tasks" 
+      hx-trigger="load"></ul>
+  <form id="addTask" 
+      hx-post="/todo-list/step05/task" 
+      hx-trigger="submit" 
+      hx-target="#todo-list" 
+      hx-swap="beforeend">
+    <input type="text" name="task" required />
+    <input type="submit" value="Add task" />
+  </form>
+</div> 
+```
+
+![Step 5: Editing tasks](../img/todo-step-05.jpg)  
+_Above: Step 5: Editing tasks._
+
+### 🔧 Server-side: Generating dynamic HTML
+
+📁 **File:** `./server/index.js`
+```js
+function step5TaskFragment(task,index) {
+  return /*html*/`
+    <li id="task-${index}" class="task">
+      <span class="task-name">${task}</span>
+      <span 
+          class="task-edit"
+          hx-get="/todo-list/step05/task/${index}"
+          hx-target="#task-${index}">📝</span>
+    </li> 
+  `;
+}
+
+function step5EditTaskForm(index) {
+  return /*html*/`
+    <form id="editTask" 
+        hx-put="/todo-list/step05/task" 
+        hx-target="#todo-list"
+        hx-trigger="submit">
+      <input type="text" name="task" required value="${taskList[index]}"/>
+      <input type="hidden" name="index" value="${index}">
+      <input type="submit" value="Edit task" />
+    </form>
+  `;
+}
+
+app.get('/todo-list/step05/tasks', (req, resp) => {
+  resp.send(`${taskList.map((t,i) => step5TaskFragment(t,i)).join("\n")}`);
+});
+
+app.post('/todo-list/step05/task', (req, resp) => { 
+  let task = req.body.task;
+  taskList.push(task);  
+  resp.send(step5TaskFragment(task,taskList.length-1));
+});
+
+app.put('/todo-list/step05/task', (req, resp) => { 
+  let task = req.body.task;
+  let index = req.body.index;
+  taskList[index]= task;  
+  resp.send(`${taskList.map((t,i) => step5TaskFragment(t,i)).join("\n")}`);
+});
+
+app.get('/todo-list/step05/task/:index', (req, resp) => {
+  resp.send(step5EditTaskForm(req.params.index));
+});
+
+app.get('/todo-list/step05/form/add', (req, resp) => {
+  resp.send(addTaskForm());
+});
+```
+
+### 🔹 How it works
+
+1. Generating task items dynamically
+   - `taskFragment(task, index)`: Generates an HTML `<li>` for each task.
+   - Each task **includes an edit button (`📝`)** that triggers `hx-get="/todo-list/step05/task/:index"` to **fetch the edit form**.
+
+2. Fetching the edit form dynamically
+   - The `/todo-list/step05/task/:index` route returns an **edit form** with the task's current value.
+   - The form is displayed **inside the existing `<li>`**, replacing the task name.
+
+3. Updating the task
+   - When the **edit form is submitted**, `hx-put="/todo-list/step05/task"` is triggered.
+   - The server updates `taskList[index]` and **sends back the updated list**.
 
 ---

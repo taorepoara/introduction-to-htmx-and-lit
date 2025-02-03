@@ -101,27 +101,93 @@ app.get('/slow-request', async (req, resp) => {
 
 
 
-/* ---------------------------------------------------------------------- 
- * Routes for to-do example
- * ---------------------------------------------------------------------- */
-
 let taskList = [];
 
-app.post('/add-task', (req, resp) => { 
+/* ---------------------------------------------------------------------- 
+ * Routes for to-do example - Step 2
+ * ---------------------------------------------------------------------- */
+
+app.post('/todo-list/step02/add', (req, resp) => { 
   let task = req.body.task;
   taskList.push(`<li>${task}</li>`);  
   resp.send(`<ul>${taskList.join('')}</ul>`);
 });
 
-app.get('/tasks', (req, resp) => { 
-  let task = req.body.task;
-  resp.send(`<ul>${taskList.join('')}</ul>`);
-});
-
-app.post('/task', (req, resp) => { 
+/* ---------------------------------------------------------------------- 
+ * Routes for to-do example - Step 3
+ * ---------------------------------------------------------------------- */
+app.post('/todo-list/step03/task', (req, resp) => { 
   let task = req.body.task;
   taskList.push(`<li>${task}</li>`);  
   resp.send(`<li>${task}</li>`);
+});
+
+/* ---------------------------------------------------------------------- 
+ * Routes for to-do example - Step 4
+ * ---------------------------------------------------------------------- */
+app.get('/todo-list/step04/tasks', (req, resp) => {
+  resp.send(`${taskList.join('')}`);
+});
+
+app.post('/todo-list/step04/task', (req, resp) => { 
+  let task = req.body.task;
+  taskList.push(`<li>${task}</li>`);  
+  resp.send(`<li>${task}</li>`);
+});
+
+
+/* ---------------------------------------------------------------------- 
+ * Routes for to-do example - Step 5
+ * ---------------------------------------------------------------------- */
+
+function step5TaskFragment(task,index) {
+  return /*html*/`
+    <li id="task-${index}" class="task">
+      <span class="task-name">${task}</span>
+      <span 
+          class="task-edit"
+          hx-get="/todo-list/step05/task/${index}"
+          hx-target="#task-${index}">📝</span>
+    </li> 
+  `;
+}
+
+function step5EditTaskForm(index) {
+  return /*html*/`
+    <form id="editTask" 
+        hx-put="/todo-list/step05/task" 
+        hx-target="#todo-list"
+        hx-trigger="submit">
+      <input type="text" name="task" required value="${taskList[index]}"/>
+      <input type="hidden" name="index" value="${index}">
+      <input type="submit" value="Edit task" />
+    </form>
+  `;
+}
+
+app.get('/todo-list/step05/tasks', (req, resp) => {
+  resp.send(`${taskList.map((t,i) => step5TaskFragment(t,i)).join("\n")}`);
+});
+
+app.post('/todo-list/step05/task', (req, resp) => { 
+  let task = req.body.task;
+  taskList.push(task);  
+  resp.send(step5TaskFragment(task,taskList.length-1));
+});
+
+app.put('/todo-list/step05/task', (req, resp) => { 
+  let task = req.body.task;
+  let index = req.body.index;
+  taskList[index]= task;  
+  resp.send(`${taskList.map((t,i) => step5TaskFragment(t,i)).join("\n")}`);
+});
+
+app.get('/todo-list/step05/task/:index', (req, resp) => {
+  resp.send(step5EditTaskForm(req.params.index));
+});
+
+app.get('/todo-list/step05/form/add', (req, resp) => {
+  resp.send(addTaskForm());
 });
 /* ---------------------------------------------------------------------- */
 

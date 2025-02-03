@@ -5,12 +5,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="../styles.css">
-  <title>&lt;/&gt; htmx examples: Sending requests other than `GET`</title>
+  <title>To-do list example - Step 3: Appending tasks instead of replacing the list</title>
 </head>
 
 <body>
-  <h1>To-do example</h1>
-  <h2>Step 1: A static view of the to-do list</h2>
+  <h1>To-do list example</h1>
+  <h2>Step 3: Appending tasks instead of replacing the list</h2>
 
   <script src="https://unpkg.com/htmx.org@2.0.2"></script>
 
@@ -18,12 +18,12 @@
     <div id="todo-list"></div>
     <form 
         id="addTask" 
-        hx-post="/task" 
+        hx-post="/todo-list/step03/task" 
         hx-trigger="submit" 
         hx-target="#todo-list" 
         hx-swap="beforeend">
       <input type="text" name="task" required />
-      <input type="submit" value="addTask" />
+      <input type="submit" value="Add task" />
     </form>
   </div>
 
