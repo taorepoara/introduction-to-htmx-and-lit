@@ -4,6 +4,7 @@ import path from 'node:path';
 const __dirname = new URL('.', import.meta.url).pathname;
 
 let app = express();
+app.use(express.urlencoded({ extended: true }));
 
 let staticRoot = path.join(__dirname, '../frontend');
 app.use('/', express.static(staticRoot))
@@ -13,6 +14,12 @@ console.log(staticRoot);
 let htmxExamplesRoot = path.join(__dirname, '../htmx-examples');
 app.use('/htmx-examples/', express.static(htmxExamplesRoot))
 console.log(htmxExamplesRoot);
+
+
+let todoExampleRoot = path.join(__dirname, '../todo-example');
+app.use('/todo-example/', express.static(todoExampleRoot))
+console.log(todoExampleRoot);
+
 
 /* ---------------------------------------------------------------------- 
  * Routes for htmx examples
@@ -93,7 +100,22 @@ app.get('/slow-request', async (req, resp) => {
 });
 
 
+
+/* ---------------------------------------------------------------------- 
+ * Routes for to-do example
+ * ---------------------------------------------------------------------- */
+
+let taskList = [];
+
+app.post('/add-task', (req, resp) => { 
+  let task = req.body.task;
+  taskList.push(`<li>${task}</li>`);  
+  resp.send(`<ul>${taskList.join('')}</ul>`);
+});
+
+
 /* ---------------------------------------------------------------------- */
+
 
 
 let server = app.listen(process.env.PORT || 8080, async function () {

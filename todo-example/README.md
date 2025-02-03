@@ -23,6 +23,9 @@ We start with a **basic static structure** for the to-do list. This step sets up
 </div>
 ```
 
+![Step 1: A static view of the to-do list](../img/todo-step-01.jpg)
+_Above: Step 1: A static view of the to-do list._
+
 ### 🔹 How it works
 
 - The `#todo-list` `div` is an **empty placeholder** where tasks will be displayed.
@@ -55,6 +58,10 @@ Now that we have a **static structure**, we integrate **htmx** to make the form 
 </div>
 ```
 
+![Step 2: Adding the htmx library](../img/todo-step-02.jpg)
+_Above: Step 2: Adding the htmx library._
+
+
 ### 🔹 How it works
 
 - We **include htmx** by adding the `<script>` tag:
@@ -68,7 +75,27 @@ Now that we have a **static structure**, we integrate **htmx** to make the form 
 
 With this setup, when a **user submits a new task**, the request will be sent via AJAX, and the to-do list will **update without a full page reload**.
 
-Next, we will **handle the response and update the task list dynamically**.
+### 🔧 Let's have a peek at the server-side:
+
+```js
+let taskList = [];
+
+app.post('/add-task', (req, resp) => { 
+  let task = req.body.task;
+  taskList.push(`<li>${task}</li>`);  
+  resp.send(`<ul>${taskList.join('')}</ul>`);
+});
+```
+
+
+The server maintains **a simple `taskList` array** to store tasks. When the form **sends a `POST` request** to `/add-task`, the server:
+
+  1. Extracts the **task text** from `req.body.task`.
+  2. Adds it to the `taskList` array, wrapping it in `<li>...</li>`.
+  3. Sends back an **updated `<ul>` list** containing all tasks.
+
+Since the **htmx request targets `#todo-list`**, the updated list **replaces** its content in the frontend **without a full page reload**.
+
+Now, when a user submits a new task, it appears instantly **without needing to write any JavaScript on the frontend**.
 
 ---
-
