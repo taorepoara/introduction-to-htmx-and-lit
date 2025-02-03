@@ -1,6 +1,5 @@
 <script src="https://unpkg.com/htmx.org@2.0.2"></script>
 
-<!-- By default, AJAX requests are triggered by the “natural” event of an element: -->
 <div id="test-spinner">
   <button hx-get="/slow-request" hx-indicator="#panel" hx-target="#status">
     Send a slow request
@@ -10,11 +9,6 @@
     <img id="indicator"  src="./img/spinner.gif">
   </div>
 </div>
-
-
-
-
-
 
 <style>
   #indicator {
