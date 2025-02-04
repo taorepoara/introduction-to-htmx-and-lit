@@ -73,6 +73,22 @@ You can find the full list of examples in the dedicated section, **[Lit examples
 
 ---
 
+Here’s the **updated section** for the **Weather Dashboard** in the **global `README.md`**, following the same structured format as previous examples.
+
+---
+
+## 🌤️ Weather Dashboard example
+
+We will end with the **Weather Dashboard**, a demo combining **htmx** and **Lit** to dynamically fetch and display weather data.  
+
+- **htmx** manages the global UI and interactions.
+- **Lit Web Components** encapsulate weather displays.
+- **Open-Meteo API** provides real-time weather data.
+
+You can find the demo in the dedicated section, [Weather Dashboard example](./weather-dashboard-example/README.md).
+
+---
+
 ## 📜 License
 
 This project is licensed under the MIT License.
