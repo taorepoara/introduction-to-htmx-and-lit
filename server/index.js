@@ -21,6 +21,10 @@ app.use('/todo-example/', express.static(todoExampleRoot))
 console.log(todoExampleRoot);
 
 
+let litExampleRoot = path.join(__dirname, '../lit-examples');
+app.use('/lit-examples/', express.static(litExampleRoot))
+console.log(litExampleRoot);
+
 /* ---------------------------------------------------------------------- 
  * Routes for htmx examples
  * ---------------------------------------------------------------------- */
@@ -189,9 +193,72 @@ app.get('/todo-list/step05/task/:index', (req, resp) => {
 app.get('/todo-list/step05/form/add', (req, resp) => {
   resp.send(addTaskForm());
 });
+
+
+/* ---------------------------------------------------------------------- 
+ * Routes for to-do example - Step 6 and final
+ * ---------------------------------------------------------------------- */
+
+function taskFragment(task,index) {
+  return /*html*/`
+    <li id="task-${index}" class="task">
+      <span class="task-name">${task}</span>
+      <span 
+          class="task-edit"
+          hx-get="/task/${index}"
+          hx-target="#task-${index}">📝</span>
+      <span 
+          class="task-delete"
+          hx-delete="/task/${index}"
+          hx-target="#todo-list">🗑️</span>
+    </li> 
+  `;
+}
+
+function editTaskForm(index) {
+  return /*html*/`
+    <form id="editTask" 
+        hx-put="/task" 
+        hx-target="#todo-list"
+        hx-trigger="submit">
+      <input type="text" name="task" required value="${taskList[index]}"/>
+      <input type="hidden" name="index" value="${index}">
+      <input type="submit" value="Edit task" />
+    </form>
+  `;
+}
+
+app.get('/tasks', (req, resp) => {
+  resp.send(`${taskList.map((t,i) => taskFragment(t,i)).join("\n")}`);
+});
+
+app.post('/task', (req, resp) => { 
+  let task = req.body.task;
+  taskList.push(task);  
+  resp.send(taskFragment(task,taskList.length-1));
+});
+
+app.put('/task', (req, resp) => { 
+  let task = req.body.task;
+  let index = req.body.index;
+  taskList[index]= task;  
+  resp.send(`${taskList.map((t,i) => taskFragment(t,i)).join("\n")}`);
+});
+
+app.get('/task/:index', (req, resp) => {
+  resp.send(editTaskForm(req.params.index));
+});
+
+app.delete('/task/:index', (req, resp) => {
+  let index = req.body.index;
+  taskList.splice(index,1);
+  resp.send(`${taskList.map((t,i) => taskFragment(t,i)).join("\n")}`);
+});
+
+app.get('/form/add', (req, resp) => {
+  resp.send(addTaskForm());
+});
 /* ---------------------------------------------------------------------- */
-
-
 
 let server = app.listen(process.env.PORT || 8080, async function () {
   let addressInfo = server.address();

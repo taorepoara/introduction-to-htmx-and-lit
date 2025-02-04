@@ -51,7 +51,7 @@ Now you're ready to explore the **htmx examples** and the **to-do list demo** in
 
 ## 🚀 htmx examples
 
-This repository includes a collection of **htmx examples** demonstrating how to perform AJAX requests, handle dynamic updates, and customize event triggers using only declarative HTML attributes.
+We will begin with a collection of **htmx examples** demonstrating how to perform AJAX requests, handle dynamic updates, and customize event triggers using only declarative HTML attributes.
 
 You can find the full list of examples in the dedicated section, **[htmx examples](./htmx-examples/README.md)**
 
@@ -59,9 +59,18 @@ You can find the full list of examples in the dedicated section, **[htmx example
 
 ## ✅ To-do list example
 
-This repository contains a **very simple yet functional to-do list application** built using **htmx**. It demonstrates how to handle user interactions, manage dynamic content, and update the UI efficiently without requiring a full JavaScript framework.
+Then we will dive into a **very simple yet functional to-do list application** built using **htmx**. It demonstrates how to handle user interactions, manage dynamic content, and update the UI efficiently without requiring a full JavaScript framework.
 
-You can find the full details and code in the dedicated section, **[To-do list example](./todo-example/README.md)**
+You can explore the steps to create this app in the dedicated section, **[To-do list example](./todo-example/README.md)**
+
+---
+
+## 🔥 Lit examples
+
+We will continue with some **simple examples using Lit**, showing how to create **Web Components** with a lightweight and efficient approach.
+
+You can find the full list of examples in the dedicated section, **[Lit examples](./lit-examples/README.md)**
+
 
 ---
 

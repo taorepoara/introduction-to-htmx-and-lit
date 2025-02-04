@@ -1,19 +1,34 @@
-<script src="https://unpkg.com/htmx.org@2.0.2"></script>
+<!DOCTYPE html>
+<html lang="en">
 
-<div id="app" class="container">
-  <div 
-    id="todo-list"
-    hx-get="/tasks"
-    hx-trigger="load"
-  ></div>
-  <form
-    id="addTask"
-    hx-post="/add-task"
-    hx-trigger="submit"
-    hx-target="#todo-list"
-    hx-swap="beforeend"
-  >
-    <input type="text" name="task" required />
-    <input type="submit" value="addTask" />
-  </form>
-</div>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../styles.css">
+  <title>To-do list example - Step 6: Deleting tasks</title>
+</head>
+
+<body>
+  <h1>To-do list example</h1>
+  <h2>Step 6: Deleting tasks</h2>
+
+  <script src="https://unpkg.com/htmx.org@2.0.2"></script>
+
+  <div id="app" class="container">
+    <h1>To-Do List</h1>
+    <ul 
+        id="todo-list" 
+        hx-get="/tasks" 
+        hx-trigger="load"></ul>
+    <form id="addTask" 
+        hx-post="/task" 
+        hx-trigger="submit" 
+        hx-target="#todo-list" 
+        hx-swap="beforeend">
+      <input type="text" name="task" required />
+      <input type="submit" value="Add task" />
+    </form>
+  </div>
+</body>
+
+</html>

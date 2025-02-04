@@ -305,3 +305,118 @@ app.get('/todo-list/step05/form/add', (req, resp) => {
    - The server updates `taskList[index]` and **sends back the updated list**.
 
 ---
+
+## 📌 Step 6: Deleting tasks
+
+In this final step, we allow users to **remove tasks dynamically**.  We also **simplify route paths** for better clarity.
+
+On the frontend-sides, we basically keep the same file, simply changing routes to drop the prefix.
+
+📁 **File:** `./todo-step-06.html`
+```html
+<script src="https://unpkg.com/htmx.org@2.0.2"></script>
+
+<div id="app" class="container">
+  <h1>To-Do List</h1>
+  <ul 
+      id="todo-list" 
+      hx-get="/tasks" 
+      hx-trigger="load"></ul>
+  <form id="addTask" 
+      hx-post="/task" 
+      hx-trigger="submit" 
+      hx-target="#todo-list" 
+      hx-swap="beforeend">
+    <input type="text" name="task" required />
+    <input type="submit" value="Add task" />
+  </form>
+</div>
+```
+
+![Step 6: Deleting tasks](../img/todo-step-06.jpg)  
+_Above: Step 6: Deleting tasks._
+
+
+### 🔧 Server-side: Handling deletions
+
+📁 **File:** `./server/index.js`
+```js
+function taskFragment(task, index) {
+  return /*html*/`
+    <li id="task-${index}" class="task">
+      <span class="task-name">${task}</span>
+      <span 
+          class="task-edit"
+          hx-get="/task/${index}"
+          hx-target="#task-${index}">📝</span>
+      <span 
+          class="task-delete"
+          hx-delete="/task/${index}"
+          hx-target="#todo-list">🗑️</span>
+    </li> 
+  `;
+}
+
+function editTaskForm(index) {
+  return /*html*/`
+    <form id="editTask" 
+        hx-put="/task" 
+        hx-target="#todo-list"
+        hx-trigger="submit">
+      <input type="text" name="task" required value="${taskList[index]}"/>
+      <input type="hidden" name="index" value="${index}">
+      <input type="submit" value="Edit task" />
+    </form>
+  `;
+}
+
+app.get('/tasks', (req, resp) => {
+  resp.send(`${taskList.map((t,i) => taskFragment(t,i)).join("\n")}`);
+});
+
+app.post('/task', (req, resp) => { 
+  let task = req.body.task;
+  taskList.push(task);  
+  resp.send(taskFragment(task,taskList.length-1));
+});
+
+app.put('/task', (req, resp) => { 
+  let task = req.body.task;
+  let index = req.body.index;
+  taskList[index] = task;  
+  resp.send(`${taskList.map((t,i) => taskFragment(t,i)).join("\n")}`);
+});
+
+app.get('/task/:index', (req, resp) => {
+  resp.send(editTaskForm(req.params.index));
+});
+
+app.delete('/task/:index', (req, resp) => {
+  let index = req.params.index;
+  taskList.splice(index, 1);
+  resp.send(`${taskList.map((t,i) => taskFragment(t,i)).join("\n")}`);
+});
+```
+
+### 🔹 How it works
+
+Each task now **includes a delete button** (`🗑️`), with a `hx-delete` attribute that triggers a **DELETE request** to remove it.
+
+The `DELETE /task/:index` route **removes the task** from `taskList` and sends to the client the **updated list**.
+
+The backend now **follows a simpler route structure** (`/task/:index` instead of multiple variations).
+
+---
+
+## 🎉 Conclusion
+
+With this final step, we now have a **simple yet functional to-do list** powered by **htmx**! 🚀
+
+✅ **Tasks can be added, edited, and deleted dynamically**.  
+✅ **No frontend JavaScript is needed beyond htmx**.  
+✅ **The UI updates seamlessly using server responses**.  
+✅ **htmx keeps everything lightweight and declarative**.  
+
+This demo showcases **how powerful htmx can be** for building **interactive UIs** without a complex frontend framework.  
+
+[⬅ Back to main README](../README.md)
