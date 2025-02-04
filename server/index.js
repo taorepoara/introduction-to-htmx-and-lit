@@ -336,7 +336,7 @@ app.post('/location', async (req, res) => {
   const country = parts.length > 1 ? parts[1] : ""; // Optional country code
 
   try {
-
+    res.send(await getWeather(city, country));
   } catch (error) {
     console.error(error);
     res.send(`<p>${error.message}</p>`);
