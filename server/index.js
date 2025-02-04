@@ -25,6 +25,11 @@ let litExampleRoot = path.join(__dirname, '../lit-examples');
 app.use('/lit-examples/', express.static(litExampleRoot))
 console.log(litExampleRoot);
 
+
+let weatherDashboardExample = path.join(__dirname, '../weather-dashboard-example');
+app.use('/weather-dashboard-example/', express.static(weatherDashboardExample))
+console.log(weatherDashboardExample);
+
 /* ---------------------------------------------------------------------- 
  * Routes for htmx examples
  * ---------------------------------------------------------------------- */
@@ -258,6 +263,89 @@ app.delete('/task/:index', (req, resp) => {
 app.get('/form/add', (req, resp) => {
   resp.send(addTaskForm());
 });
+
+/* ---------------------------------------------------------------------- 
+ * Weather Dashboard example
+ * ---------------------------------------------------------------------- */
+
+// Helper function to return a weather-widget component
+function weatherWidgetTemplate(location, lat, lon) {
+  return `<weather-widget name="${location}" latitude="${lat}" longitude="${lon}"></weather-widget>`;
+}
+
+async function getWeather(city, country) {
+
+  // Fetch coordinates from Open-Meteo API with country filter if provided
+  const geoUrl = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&format=json`;
+
+  
+  try {
+    const geoResponse = await fetch(geoUrl);
+    const geoData = await geoResponse.json();
+
+    if (geoData.results && geoData.results.length > 0) {
+
+      if (!country) {
+        let { latitude, longitude } = geoData.results[0];
+        return weatherWidgetTemplate(city, latitude, longitude);
+      } else {
+        if (geoData.results.filter((item) => 
+          (item.country_code.toLowerCase()==country.toLowerCase()) ||
+          (item.country.toLowerCase()==country.toLowerCase()) ).length > 0) { 
+          let { latitude, longitude, country_code } = geoData.results.filter((item) => 
+              (item.country_code.toLowerCase()==country.toLowerCase()) ||
+              (item.country.toLowerCase()==country.toLowerCase()))[0];
+          return weatherWidgetTemplate(`${city} (${country_code})`, latitude, longitude);
+        }
+        else {
+          throw(new Error('⚠️ Location not found'));
+        }
+      }
+    } else {
+      throw(new Error('⚠️ Location not found'));
+    }
+    
+  } catch (error) {
+    console.error(error);
+    throw(new Error('⚠️ Error fetching location'));
+  }
+}
+
+app.get('/locations', async (req, res) => {
+  let locations = '';
+  try {
+    locations += await getWeather('Brest', 'FR')+'\n';
+    locations += await getWeather('Stockholm', 'SE')+'\n';
+    locations += await getWeather('Madrid', 'ES');
+    res.send(locations);
+  } catch (error) {
+    console.error(error);
+    res.send(`<p>${error.message}</p>`);
+  }
+
+});
+
+// Handle location search & return a weather widget
+app.post('/location', async (req, res) => {
+
+  const input = req.body.location.trim();
+  
+  // Extract city & country from input
+  const parts = input.split(',').map(part => part.trim());
+  const city = parts[0];
+  const country = parts.length > 1 ? parts[1] : ""; // Optional country code
+
+  try {
+
+  } catch (error) {
+    console.error(error);
+    res.send(`<p>${error.message}</p>`);
+  }
+
+});
+
+
+
 /* ---------------------------------------------------------------------- */
 
 let server = app.listen(process.env.PORT || 8080, async function () {

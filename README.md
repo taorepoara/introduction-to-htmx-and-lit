@@ -71,7 +71,6 @@ We will continue with some **simple examples using Lit**, showing how to create 
 
 You can find the full list of examples in the dedicated section, **[Lit examples](./lit-examples/README.md)**
 
-
 ---
 
 ## 📜 License
