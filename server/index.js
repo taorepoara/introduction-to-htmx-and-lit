@@ -256,7 +256,7 @@ app.get('/task/:index', (req, resp) => {
 });
 
 app.delete('/task/:index', (req, resp) => {
-  let index = req.body.index;
+  let index = req.params.index;
   taskList.splice(index,1);
   resp.send(`${taskList.map((t,i) => taskFragment(t,i)).join("\n")}`);
 });
