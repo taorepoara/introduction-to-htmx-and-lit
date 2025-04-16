@@ -1,7 +1,8 @@
 import express from 'express';
 import path from 'node:path';
 
-const __dirname = new URL('.', import.meta.url).pathname;
+// const __dirname = new URL('.', import.meta.url).pathname;
+const __dirname = path.parse(import.meta.url)['dir'].replace('file:///','');
 
 let app = express();
 app.use(express.urlencoded({ extended: true }));
@@ -36,12 +37,12 @@ console.log(weatherDashboardExample);
 
 app.get('/clicked', (req, resp) => { 
   resp.send( /*html*/`
-    <div id="status">You have sent a <code>GET</code> request to <code>/clicked</code></div>
+    You have sent a <code>GET</code> request to <code>/clicked</code>
     `);
 });
 app.post('/clicked', (req, resp) => { 
   resp.send( /*html*/`
-    <div id="status">You have sent a <code>POST</code> request to <code>/clicked</code></div>
+    You have sent a <code>POST</code> request to <code>/clicked</code>
     `);
 });
 app.put('/clicked', (req, resp) => { 
