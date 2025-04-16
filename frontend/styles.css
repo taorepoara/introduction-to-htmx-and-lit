@@ -121,7 +121,7 @@ input[type="text"]:disabled, input[type="password"]:disabled, textarea:disabled 
 /* Form layout */
 form {
   display: flex;
-  flex-wrap: wrap;
+  flex-flow: wrap;
   gap: 10px;
   align-items: center;
 }
